@@ -11,6 +11,6 @@ Spark / MLlib の NaiveBayes を利用するデモアプリケーションです
 
 ``sbt`` がインストールされた環境にて、以下を実行します。
 
-        $ git clone https://github.com/ALBERT-Inc/mllib-naivebayes-demo.git
-        $ cd mllib-naivebayes-demo
-        $ sbt run
+    $ git clone https://github.com/ALBERT-Inc/mllib-naivebayes-demo.git
+    $ cd mllib-naivebayes-demo
+    $ sbt run
