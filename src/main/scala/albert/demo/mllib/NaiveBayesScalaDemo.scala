@@ -26,7 +26,6 @@ object NaiveBayesScalaDemo {
     val sc = new SparkContext("local", "demo")
 
     val preparedData = sc.textFile("SMSSpamCollection")
-      .filter(line => line.startsWith("ham") || line.startsWith("spam"))
       .map(_.toLowerCase.replaceAll("[,.!?\"]", " ").split("\\s+"))
       .map(wordsInSms => (wordsInSms.head, wordsInSms.tail))
 
@@ -48,7 +47,7 @@ object NaiveBayesScalaDemo {
         .mapValues(_.length.toDouble)
 
       LabeledPoint(
-        if ("ham".equals(label)) 1.0 else -1.0,
+        if ("ham" == label) 1.0 else -1.0,
         Vectors.sparse(wordIndexes.size, wordCounts.toSeq)
       )
     }
@@ -64,10 +63,11 @@ object NaiveBayesScalaDemo {
       testingSet.map { t =>
         val predicted = model.predict(t.features)
 
-        if (predicted == 1.0) {
-          if (t.label == 1.0) "TN" else "FN"
-        } else {
-          if (t.label == -1.0) "TP" else "FP"
+        (predicted, t.label) match {
+          case (1.0, 1.0) => "TN"
+          case (1.0, _) => "FN"
+          case (_, -1.0) => "TP"
+          case (_, _) => "FP"
         }
       }.countByValue()
     }
