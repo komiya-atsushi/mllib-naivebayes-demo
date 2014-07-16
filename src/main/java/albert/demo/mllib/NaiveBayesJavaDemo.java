@@ -38,7 +38,6 @@ public class NaiveBayesJavaDemo {
         JavaSparkContext sc = new JavaSparkContext("local", "demo");
 
         JavaPairRDD<String, List<String>> rdd = sc.textFile("SMSSpamCollection")
-                .filter(line -> line.startsWith("ham") || line.startsWith("spam"))
                 .mapToPair(line -> {
                     String[] elements = line.toLowerCase().replaceAll("[,.!?\"]", " ").split("\\s+");
                     return new Tuple2<>(elements[0], Arrays.stream(elements, 1, elements.length).collect(Collectors.toList()));
